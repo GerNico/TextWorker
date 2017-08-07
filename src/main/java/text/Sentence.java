@@ -6,13 +6,13 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class Sentence {
+public class Sentence {
     private static final String regex ="[^.!?\\s”][^.!?]*" +
             "(?:[.!?](?!['\"”]?\\s|$)[^.!?]*)*" +
             "[.!?]?['\"”]?(?=\\s|$)";
 
 
-    private static List<String> parseAllSentences(String fileName) {
+    public static List<String> parseAllSentences(String fileName) {
         try {
             File file = new File(fileName);
             Scanner scanner = new Scanner(file);
@@ -26,7 +26,7 @@ class Sentence {
         }
     }
 
-    private static List<String> parseSentencesFromString(String content) {
+    public static List<String> parseSentencesFromString(String content) {
         Pattern re = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher reMatcher = re.matcher(content);
         List<String> sentences = new ArrayList<>();
@@ -36,13 +36,13 @@ class Sentence {
         return sentences;
     }
 
-    static List<String> orderedSentences(String filename, Comparator comparator){
+    public static List<String> orderedSentences(String filename, Comparator comparator){
        List<String> allSentences= parseAllSentences(filename);
         allSentences.sort(comparator);
         return allSentences;
     }
 
-    final static Comparator<String> fromChortToLong=(a,b)->{
+    public final static Comparator<String> fromChortToLong=(a, b)->{
         if(a.length()>b.length()) return 1;
         if(a.length()<b.length()) return -1;
         if(a.length()== b.length()) {
