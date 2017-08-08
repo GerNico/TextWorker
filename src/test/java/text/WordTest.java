@@ -20,8 +20,7 @@ public class WordTest {
         expected.add("cruel");
         expected.add("wicked");
         expected.add("and");
-        expected.add("bad");
-        expected.add("hearted");
+        expected.add("bad-hearted");
         for (int i=0;i<parsed.size();i++) {
             assertEquals(expected.get(i),parsed.get(i));
         }

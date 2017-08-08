@@ -1,13 +1,12 @@
 package text;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Sentence {
-    private static final String regex ="[^.!?\\s”][^.!?]*" +
+    private static final String regex = "[^.!?\\s”][^.!?]*" +
             "(?:[.!?](?!['\"”]?\\s|$)[^.!?]*)*" +
             "[.!?]?['\"”]?(?=\\s|$)";
 
@@ -36,21 +35,22 @@ public class Sentence {
         return sentences;
     }
 
-    public static List<String> orderedSentences(String filename, Comparator comparator){
-       List<String> allSentences= parseAllSentences(filename);
-        allSentences.sort(comparator);
-        return allSentences;
-    }
+    public static String readAllLines(String fileName) {
+        StringBuilder sb = new StringBuilder();
 
-    public final static Comparator<String> fromChortToLong=(a, b)->{
-        if(a.length()>b.length()) return 1;
-        if(a.length()<b.length()) return -1;
-        if(a.length()== b.length()) {
-            for (int i = 0; i <a.length() ; i++) {
-                if (a.charAt(i)>b.charAt(i)) return 1;
-                if (a.charAt(i)<b.charAt(i)) return -1;
+        File file = new File( fileName);
+
+        try {
+            try (BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-            return 0;
-    };
+        return sb.toString();
+    }
 }
