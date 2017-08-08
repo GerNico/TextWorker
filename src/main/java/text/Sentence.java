@@ -11,7 +11,7 @@ public class Sentence {
             "[.!?]?['\"”]?(?=\\s|$)";
 
 
-    public static List<String> parseAllSentences(String fileName) {
+    static List<String> parseAllSentences(String fileName) {
         try {
             File file = new File(fileName);
             Scanner scanner = new Scanner(file);
@@ -25,7 +25,7 @@ public class Sentence {
         }
     }
 
-    public static List<String> parseSentencesFromString(String content) {
+    private static List<String> parseSentencesFromString(String content) {
         Pattern re = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher reMatcher = re.matcher(content);
         List<String> sentences = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Sentence {
         return sentences;
     }
 
-    public static String readAllLines(String fileName) {
+    static String readAllLines(String fileName) {
         StringBuilder sb = new StringBuilder();
 
         File file = new File( fileName);
@@ -52,5 +52,9 @@ public class Sentence {
             throw new RuntimeException(e);
         }
         return sb.toString();
+    }
+
+    static String getRegex() {
+        return regex;
     }
 }

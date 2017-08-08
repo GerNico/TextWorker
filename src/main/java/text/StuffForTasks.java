@@ -225,7 +225,7 @@ public class StuffForTasks {
         StringJoiner sj = new StringJoiner("\n");
 
         Consumer<String> consumer = word -> {
-            long i = 0;
+            long i;
             i = parsedWords.stream().filter(word::equals).count();
             unsortMap.put(word, i);
         };
@@ -260,29 +260,29 @@ public class StuffForTasks {
     public static String task12(String fileName, int length) {
         String initial = Sentence.readAllLines(fileName);
         if (length > 1) initial = initial.replaceAll(
-                "(?![\\p{L}\\p{N}-])[^aeiouAEIOU][\\p{L}\\p{N}-]{" + (length) + "}(?![\\p{L}\\p{N}-])", " ");
+                "(?<![\\p{L}\\p{N}-])[^aeiouAEIOU][\\p{L}\\p{N}-]{" + (length - 1) + "}(?![\\p{L}\\p{N}-])", "");
         return initial;
     }
 
-        public static String task15(String fileName) {
-        String initial=Sentence.readAllLines(fileName);
-        String wordRegex="[\\p{L}\\p{N}-]+";
-        Pattern pattern1=Pattern.compile(wordRegex);
+    public static String task15(String fileName) {
+        String initial = Sentence.readAllLines(fileName);
+        String wordRegex = "[\\p{L}\\p{N}-]+";
+        Pattern pattern1 = Pattern.compile(wordRegex);
         Matcher m = pattern1.matcher(initial);
-        String ouput="";
+        StringBuffer sb = new StringBuffer();
         while (m.find()) {
-            ouput = m.replaceFirst(m.group());
+            m.appendReplacement(sb, m.group(0).replaceAll(m.group(0).substring(0, 1), ""));
         }
-        return ouput;
+        return sb.toString();
     }
 
 
     public static String task14(String fileName) {
         String initial = Sentence.readAllLines(fileName);
-        Set<CharSequence> palindromesSet=new HashSet<>();
+        Set<CharSequence> palindromesSet = new HashSet<>();
 
         if (initial.length() <= 2) {
-            palindromesSet=Collections.emptySet();
+            palindromesSet = Collections.emptySet();
         }
         int length = initial.length();
         for (int i = 1; i <= length; i++) {
@@ -294,11 +294,24 @@ public class StuffForTasks {
                 }
             }
         }
-        String result="";
-        for (CharSequence palindrome:palindromesSet) {
-            if (palindrome.length()>result.length())result= (String) palindrome;
+        String result = "";
+        for (CharSequence palindrome : palindromesSet) {
+            if (palindrome.length() > result.length()) result = (String) palindrome;
         }
         return result;
+    }
+
+    public static String task16(String fileName, int length, String replacement) {
+        String initial = Sentence.readAllLines(fileName);
+        String wordForReplacement = "(?<![\\p{L}\\p{N}-])([\\p{L}\\p{N}-]{" + length + "})(?![\\p{L}\\p{N}-])";
+
+        Pattern pattern1 = Pattern.compile(Sentence.getRegex());
+        Matcher m = pattern1.matcher(initial);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(sb, m.group().replaceAll(wordForReplacement, replacement));
+        }
+        return sb.toString();
     }
 
 }
